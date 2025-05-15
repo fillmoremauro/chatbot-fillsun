@@ -125,7 +125,7 @@
 
 <div id="chatbot">
   <div id="chat-header">
-    <img src="https://fillsun-chatbot.s3.amazonaws.com/logo-fillsun.png" alt="Logo Fillsun">
+    <img src="Logo.png" alt="Logo Fillsun">
     <div>Equipo Fillsun en línea</div>
   </div>
   <div id="chat-messages"></div>
@@ -184,7 +184,12 @@ async function sendMessage() {
     appendMessage("<strong>Luz:</strong> Error al conectar con el servidor.", "bot");
   }
 }
+
+window.onload = () => {
+  appendMessage("<strong>Luz:</strong> ¡Hola! Soy Luz, parte del equipo de Fillsun. ¿Cómo te llamás?", "bot");
+};
 </script>
+
 
 </body>
 </html>
