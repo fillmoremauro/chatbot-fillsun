@@ -31,4 +31,16 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
+app.get("/test-openai", async (req, res) => {
+  try {
+    const completion = await openai.chat.completions.create({
+      model: "gpt-4",
+      messages: [{ role: "user", content: "Decime si estás funcionando." }]
+    });
+    res.json({ status: "OK", reply: completion.choices[0].message.content });
+  } catch (err) {
+    res.status(500).json({ status: "ERROR", message: err.message });
+  }
+});
+
 app.listen(3000, () => console.log('✅ Luz online en puerto 3000 con frontend'));
