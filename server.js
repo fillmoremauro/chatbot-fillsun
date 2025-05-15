@@ -1,10 +1,15 @@
+
 const express = require('express');
 const bodyParser = require('body-parser');
+const path = require('path');
 require('dotenv').config();
 const { OpenAI } = require('openai');
 
 const app = express();
 app.use(bodyParser.json());
+
+// Servir archivos estáticos (como index.html)
+app.use(express.static(path.join(__dirname)));
 
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
@@ -21,4 +26,9 @@ app.post('/chat', async (req, res) => {
   }
 });
 
-app.listen(3000, () => console.log('✅ Chatbot Luz corriendo en el puerto 3000'));
+// Ruta raíz -> mostrar index.html
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html'));
+});
+
+app.listen(3000, () => console.log('✅ Luz online en puerto 3000 con frontend'));
