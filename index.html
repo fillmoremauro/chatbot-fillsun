@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -179,6 +178,33 @@ async function sendMessage() {
     }
 
     appendMessage("<strong>Luz:</strong> " + (data.reply || "Lo siento, no pude responderte."), "bot");
+
+    // Detectar si Luz sugirió seguir por WhatsApp
+    const respuestaBot = (data.reply || "").toLowerCase();
+    const frasesWhatsapp = [
+      "seguí por whatsapp",
+      "podés seguir por whatsapp",
+      "te sugiero que sigamos por whatsapp",
+      "¿querés que lo hablemos por whatsapp?",
+      "podés escribirnos por whatsapp",
+      "contactate por whatsapp",
+      "podemos continuar por whatsapp",
+      "te paso el whatsapp",
+      "te dejo el link de whatsapp"
+    ];
+
+    const boton = document.getElementById("whatsapp-button");
+    const fraseDetectada = frasesWhatsapp.some(f => respuestaBot.includes(f));
+
+    if (fraseDetectada) {
+      const nombre = nombreCliente || "cliente";
+      const mensaje = encodeURIComponent(`Hola Fillsun, me llamo ${nombre} y estuve consultando con Luz sobre un producto solar.`);
+      boton.href = `https://wa.me/5491123456789?text=${mensaje}`;
+      boton.style.display = "block";
+    } else {
+      boton.style.display = "none";
+    }
+
   } catch (err) {
     loading.remove();
     appendMessage("<strong>Luz:</strong> Error al conectar con el servidor.", "bot");
@@ -190,6 +216,12 @@ window.onload = () => {
 };
 </script>
 
+<a id="whatsapp-button"
+   href="#"
+   target="_blank"
+   style="display: none; position: fixed; bottom: 80px; right: 20px; background-color: #25d366; color: white; padding: 12px 18px; border-radius: 50px; text-decoration: none; font-weight: bold; z-index: 999;">
+   📲 Seguí por WhatsApp
+</a>
 
 </body>
 </html>
