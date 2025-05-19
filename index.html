@@ -135,6 +135,7 @@
 </div>
 
 <script>
+let ultimoInteres = "";
 let nombreCliente = "";
 let interacciones = 0;
 
@@ -158,6 +159,10 @@ async function sendMessage() {
   appendMessage("<strong>" + (nombreCliente || "Vos") + ":</strong> " + text, "user");
   input.value = "";
 
+  if (!text.toLowerCase().includes("whatsapp")) {
+    ultimoInteres = text;
+  }
+
   const loading = document.createElement("div");
   loading.className = "bubble bot";
   loading.innerHTML = `<div class="typing-dots"><span></span><span></span><span></span></div>`;
@@ -179,7 +184,6 @@ async function sendMessage() {
 
     appendMessage("<strong>Luz:</strong> " + (data.reply || "Lo siento, no pude responderte."), "bot");
 
-    // Detectar si Luz sugirió seguir por WhatsApp
     const respuestaBot = (data.reply || "").toLowerCase();
     const frasesWhatsapp = [
       "seguí por whatsapp",
@@ -187,11 +191,11 @@ async function sendMessage() {
       "te sugiero que sigamos por whatsapp",
       "¿querés que lo hablemos por whatsapp?",
       "podés escribirnos por whatsapp",
-      "seguimos por whatsapp",
       "contactate por whatsapp",
       "podemos continuar por whatsapp",
       "te paso el whatsapp",
-      "te dejo el link de whatsapp"
+      "te dejo el link de whatsapp",
+      "seguimos por whatsapp"
     ];
 
     const boton = document.getElementById("whatsapp-button");
@@ -199,7 +203,8 @@ async function sendMessage() {
 
     if (fraseDetectada) {
       const nombre = nombreCliente || "cliente";
-      const mensaje = encodeURIComponent(`Hola Fillsun, me llamo ${nombre} y estuve consultando con Luz sobre un producto solar.`);
+      const resumen = ultimoInteres || "un producto solar";
+      const mensaje = encodeURIComponent(`Hola Fillsun, me llamo ${nombre} y estuve consultando con Luz sobre: "${resumen}"`);
       boton.href = `https://wa.me/5491133480020?text=${mensaje}`;
       boton.style.display = "block";
     } else {
