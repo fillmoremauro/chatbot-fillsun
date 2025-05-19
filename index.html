@@ -10,13 +10,17 @@
       margin: 0;
       padding: 0;
     }
+    #chatbot.minimizado {
+      height: 90px;
+      background-color: transparent;
+    }
     #chatbot {
       position: fixed;
       bottom: 20px;
       right: 20px;
       width: 380px;
       height: 110px;
-      border-radius: 12px 12px 0 0;
+      border-radius: 12px;
       background-color: white;
       box-shadow: 0 0 12px rgba(0,0,0,0.2);
       display: flex;
@@ -39,6 +43,7 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
+      position: relative;
     }
     #chat-header img {
       height: 36px;
@@ -61,6 +66,14 @@
     @keyframes blink {
       0%, 50%, 100% { opacity: 1; }
       25%, 75% { opacity: 0.2; }
+    }
+    #minimizar {
+      position: absolute;
+      top: 6px;
+      right: 10px;
+      font-size: 18px;
+      cursor: pointer;
+      color: #999;
     }
     #chat-messages {
       flex-grow: 1;
@@ -149,8 +162,9 @@
 </head>
 <body>
 
-<div id="chatbot" onclick="expandirChatbot()">
+<div id="chatbot" class="minimizado" onclick="expandirChatbot()">
   <div id="chat-header">
+    <div id="minimizar" onclick="minimizarChatbot(event)">&minus;</div>
     <img src="Logo.png" alt="Logo Fillsun">
     <div>Equipo Fillsun en línea <span class="status-dot"></span></div>
   </div>
@@ -168,11 +182,18 @@ let interacciones = 0;
 
 function expandirChatbot() {
   const chatbot = document.getElementById("chatbot");
-  if (!chatbot.classList.contains("expandido")) {
-    chatbot.classList.add("expandido");
-    chatbot.onclick = null;
-    appendMessage("<strong>Luz:</strong> ¡Hola! Soy Luz, parte del equipo de Fillsun. ¿Cómo te llamás?", "bot");
-  }
+  chatbot.classList.remove("minimizado");
+  chatbot.classList.add("expandido");
+  chatbot.onclick = null;
+  appendMessage("<strong>Luz:</strong> ¡Hola! Soy Luz, parte del equipo de Fillsun. ¿Cómo te llamás?", "bot");
+}
+
+function minimizarChatbot(e) {
+  e.stopPropagation();
+  const chatbot = document.getElementById("chatbot");
+  chatbot.classList.remove("expandido");
+  chatbot.classList.add("minimizado");
+  chatbot.onclick = () => expandirChatbot();
 }
 
 function appendMessage(content, clase) {
