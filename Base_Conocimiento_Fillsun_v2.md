@@ -24,6 +24,7 @@
 - **Rango de temperatura**: hasta -15°C
 
 ### 1.3 Capacidades recomendadas
+- 100L: hasta 2 a 3 personas
 - 150L: hasta 3 personas
 - 200L: 4 a 5 personas
 - 300L: más de 5 personas
