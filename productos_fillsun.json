@@ -48,27 +48,39 @@
     "tipo": "piscinas"
   },
   {
-    "nombre": "Kit solar fotovoltaico 12V 150W",
-    "url": "https://www.energia-solar.com.ar/producto/kit-solar-150w-12v-completo/",
+    "nombre": "Kit solar fotovoltaico",
+    "url": "https://www.energia-solar.com.ar/?product_cat=kits-fotovoltaicos",
     "categoria": "kits solares",
     "tipo": "fotovoltaico"
   },
   {
-    "nombre": "Kit solar fotovoltaico 24V 300W",
-    "url": "https://www.energia-solar.com.ar/producto/kit-solar-300w-24v-completo/",
-    "categoria": "kits solares",
+    "nombre": "paneles solares",
+    "url": "https://www.energia-solar.com.ar/?product_cat=paneles-fotovoltaicos",
+    "categoria": "Paneles solares",
     "tipo": "fotovoltaico"
   },
   {
-    "nombre": "Bomba presurizadora solar",
-    "url": "https://www.energia-solar.com.ar/producto/bomba-presurizadora-para-termotanque-solar/",
-    "categoria": "accesorios",
-    "tipo": "bomba"
+    "nombre": "Colector solar de placa plana",
+    "url": "https://www.energia-solar.com.ar/?product_cat=colectores_de_placa_plana",
+    "categoria": "colector solar",
+    "tipo": "Plana"
   },
   {
-    "nombre": "Controlador solar automático",
-    "url": "https://www.energia-solar.com.ar/producto/controlador-solar-automatico/",
-    "categoria": "accesorios",
-    "tipo": "controlador"
+    "nombre": "Colector solar heat pipe",
+    "url": "https://www.energia-solar.com.ar/?product_cat=colectores-heat-pipe",
+    "categoria": "colector solar",
+    "tipo": "plana"
+  },
+  {
+    "nombre": "Termotanque solar placa plana",
+    "url": "https://www.energia-solar.com.ar/?product_cat=termotanque_solar_de_placa_plana",
+    "categoria": "Presurizado",
+    "tipo": "plana"
+  },
+  {
+    "nombre": "Colector solar heat pipe",
+    "url": "https://www.energia-solar.com.ar/?product_cat=colectores-heat-pipe",
+    "categoria": "colector solar",
+    "tipo": "plana"
   }
 ]
