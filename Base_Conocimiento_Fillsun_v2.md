@@ -29,7 +29,7 @@
 - 200L: 4 a 5 personas
 - 300L: más de 5 personas
 
-## 2. Colectores Solares EPDM para Piscinas
+## 2. Colectores Solares EPDM para Piscinas/piletas (climatizacion solar)
 
 - **Material**: EPDM
 - **Superficie recomendada**: cubrir el 80% del espejo de agua
