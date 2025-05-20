@@ -189,10 +189,17 @@ function expandirChatbot() {
   chatbot.classList.remove("minimizado");
   chatbot.classList.add("expandido");
   chatbot.onclick = null;
+
   if (interacciones === 0) {
-    appendMessage("<strong>Luz:</strong> ¡Hola! Soy Luz, parte del equipo de Fillsun. ¿Cómo te llamás?", "bot");
+    const historial = JSON.parse(localStorage.getItem("chatHistorial")) || [];
+    if (historial.length > 0) {
+      historial.forEach(m => appendMessage(m.content, m.clase));
+    } else {
+      appendMessage("<strong>Luz:</strong> ¡Hola! Soy Luz, parte del equipo de Fillsun. ¿Cómo te llamás?", "bot");
+    }
     interacciones++;
   }
+  
   window.parent.postMessage("expandir", "*");
 }
 
@@ -212,6 +219,11 @@ function appendMessage(content, clase) {
   msg.innerHTML = content;
   messages.appendChild(msg);
   messages.scrollTop = messages.scrollHeight;
+
+  // Guardar historial en localStorage
+  let historial = JSON.parse(localStorage.getItem("chatHistorial")) || [];
+  historial.push({ content, clase });
+  localStorage.setItem("chatHistorial", JSON.stringify(historial));
 }
 
 function handleKeyPress(e) {
