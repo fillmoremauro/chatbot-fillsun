@@ -4,9 +4,6 @@
   <meta charset="UTF-8" />
   <title>Chatbot Luz | Fillsun</title>
   <style>
-    html, body {
-      background: transparent !important;
-    }
     body {
       font-family: 'Segoe UI', sans-serif;
       background-color: #f5f5f5;
@@ -15,13 +12,13 @@
     }
     #chatbot.minimizado {
       height: 90px;
-      background-color: white;
+      background-color: transparent;
     }
     #chatbot {
       position: fixed;
       bottom: 20px;
       right: 20px;
-      width: 350px;
+      width: 380px;
       height: 110px;
       border-radius: 12px;
       background-color: white;
@@ -34,7 +31,7 @@
       cursor: pointer;
     }
     #chatbot.expandido {
-      height: 500px;
+      height: 600px;
       cursor: default;
     }
     #chat-header {
@@ -182,6 +179,7 @@
 let ultimoInteres = "";
 let nombreCliente = "";
 let interacciones = 0;
+const URL_PRODUCTOS = "https://chatbot-fillsun.onrender.com/productos_fillsun.json";
 
 function expandirChatbot() {
   const chatbot = document.getElementById("chatbot");
@@ -279,6 +277,25 @@ async function sendMessage() {
   } catch (err) {
     loading.remove();
     appendMessage("<strong>Luz:</strong> Error al conectar con el servidor.", "bot");
+  }
+
+  // Búsqueda de productos
+  try {
+    const resp = await fetch(URL_PRODUCTOS);
+    const productos = await resp.json();
+    const consulta = text.toLowerCase();
+    const coincidencias = productos.filter(p =>
+      p.nombre.toLowerCase().includes(consulta) ||
+      (p.categoria && consulta.includes(p.categoria.toLowerCase())) ||
+      (p.tipo && consulta.includes(p.tipo.toLowerCase()))
+    );
+    if (coincidencias.length > 0) {
+      const prod = coincidencias[0];
+      const sugerencia = `👉 Te puede interesar este producto: <a href="${prod.url}" target="_blank">${prod.nombre}</a>`;
+      appendMessage("<strong>Luz:</strong> " + sugerencia, "bot");
+    }
+  } catch (err) {
+    console.warn("No se pudieron cargar los productos:", err);
   }
 }
 </script>
