@@ -1,30 +1,48 @@
 [
   {
-    "nombre": "Termotanque solar 200L Atmosférico",
-    "url": "https://www.energia-solar.com.ar/producto/termotanque-solar-atmosferico-200-litros/",
+    "nombre": "Termotanque solar 100L Atmosférico",
+    "url": "https://www.energia-solar.com.ar/?product=termotanque-solar-100-litros/",
     "categoria": "termotanques",
     "tipo": "no presurizado"
   },
   {
-    "nombre": "Termotanque solar 300L Atmosférico",
-    "url": "https://www.energia-solar.com.ar/producto/termotanque-solar-atmosferico-300-litros/",
+    "nombre": "Termotanque solar 150L Atmosférico",
+    "url": "https://www.energia-solar.com.ar/?product=termotanque-solar-150-litros",
     "categoria": "termotanques",
     "tipo": "no presurizado"
+  },
+  {
+    "nombre": "Termotanque solar 200L Atmosférico",
+    "url": "https://www.energia-solar.com.ar/?product=termotanque-solar-200-litros",
+    "categoria": "termotanques",
+    "tipo": "no presurizado"
+  },
+  {
+    "nombre": "Termotanque solar 250L Atmosférico",
+    "url": "https://www.energia-solar.com.ar/?product=termotanque-solar-250-litros",
+    "categoria": "termotanques",
+    "tipo": "no presurizado"
+  },
+  {
+    "nombre": "Termotanque solar 150L Presurizado",
+    "url": "https://www.energia-solar.com.ar/?product=termotanque-solar-heat-pipe-150-litros",
+    "categoria": "termotanques",
+    "tipo": "presurizado"
   },
   {
     "nombre": "Termotanque solar 200L Presurizado",
-    "url": "https://www.energia-solar.com.ar/producto/termotanque-solar-heat-pipe-presurizado-200-litros/",
+    "url": "https://www.energia-solar.com.ar/?product=termotanque-solar-heat-pipe-200-litros",
     "categoria": "termotanques",
     "tipo": "presurizado"
   },
   {
-    "nombre": "Termotanque solar 300L Presurizado",
-    "url": "https://www.energia-solar.com.ar/producto/termotanque-solar-heat-pipe-presurizado-300-litros/",
+    "nombre": "Termotanque solar 250L Presurizado",
+    "url": "https://www.energia-solar.com.ar/?product=termotanque-solar-heat-pipe-250-litros",
     "categoria": "termotanques",
     "tipo": "presurizado"
   },
   {
-    "nombre": "Colector solar EPDM 3m²",
+    "nombre": "Colector solar EPDM",
     "url": "https://www.energia-solar.com.ar/producto/colector-solar-epdm-para-piscina-3m2/",
     "categoria": "colectores",
     "tipo": "piscinas"
