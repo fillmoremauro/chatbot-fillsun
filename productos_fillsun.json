@@ -1,0 +1,56 @@
+[
+  {
+    "nombre": "Termotanque solar 200L Atmosférico",
+    "url": "https://www.energia-solar.com.ar/producto/termotanque-solar-atmosferico-200-litros/",
+    "categoria": "termotanques",
+    "tipo": "no presurizado"
+  },
+  {
+    "nombre": "Termotanque solar 300L Atmosférico",
+    "url": "https://www.energia-solar.com.ar/producto/termotanque-solar-atmosferico-300-litros/",
+    "categoria": "termotanques",
+    "tipo": "no presurizado"
+  },
+  {
+    "nombre": "Termotanque solar 200L Presurizado",
+    "url": "https://www.energia-solar.com.ar/producto/termotanque-solar-heat-pipe-presurizado-200-litros/",
+    "categoria": "termotanques",
+    "tipo": "presurizado"
+  },
+  {
+    "nombre": "Termotanque solar 300L Presurizado",
+    "url": "https://www.energia-solar.com.ar/producto/termotanque-solar-heat-pipe-presurizado-300-litros/",
+    "categoria": "termotanques",
+    "tipo": "presurizado"
+  },
+  {
+    "nombre": "Colector solar EPDM 3m²",
+    "url": "https://www.energia-solar.com.ar/producto/colector-solar-epdm-para-piscina-3m2/",
+    "categoria": "colectores",
+    "tipo": "piscinas"
+  },
+  {
+    "nombre": "Kit solar fotovoltaico 12V 150W",
+    "url": "https://www.energia-solar.com.ar/producto/kit-solar-150w-12v-completo/",
+    "categoria": "kits solares",
+    "tipo": "fotovoltaico"
+  },
+  {
+    "nombre": "Kit solar fotovoltaico 24V 300W",
+    "url": "https://www.energia-solar.com.ar/producto/kit-solar-300w-24v-completo/",
+    "categoria": "kits solares",
+    "tipo": "fotovoltaico"
+  },
+  {
+    "nombre": "Bomba presurizadora solar",
+    "url": "https://www.energia-solar.com.ar/producto/bomba-presurizadora-para-termotanque-solar/",
+    "categoria": "accesorios",
+    "tipo": "bomba"
+  },
+  {
+    "nombre": "Controlador solar automático",
+    "url": "https://www.energia-solar.com.ar/producto/controlador-solar-automatico/",
+    "categoria": "accesorios",
+    "tipo": "controlador"
+  }
+]
