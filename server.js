@@ -101,7 +101,7 @@ app.post("/enviar-mail", async (req, res) => {
 
     const info = await transporter.sendMail({
       from: '"Luz - Chatbot Fillsun" <info@jrfillmore.com.ar>',
-      to: "ventas@energia-solar.com.ar",
+      to: ['ventas@energia-solar.com.ar', 'ventas5@energia-solar.com.ar'],
       subject: "📬 Nuevo contacto desde el chatbot de Fillsun",
       html: `
         <p><strong>Nombre:</strong> ${nombre}</p>
