@@ -259,7 +259,15 @@ async function sendMessage() {
     const res = await fetch("https://chatbot-fillsun.onrender.com/chat", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ message: text })
+      const historial = JSON.parse(sessionStorage.getItem("chatHistorial")) || [];
+    const mensajesIA = historial.map(m => ({
+      role: m.clase === "user" ? "user" : "assistant",
+      content: m.content.replace(/<[^>]*>/g, '') // Limpia etiquetas HTML
+    }));
+
+  mensajesIA.unshift({ role: "system", content: systemPrompt });
+  body: JSON.stringify({ messages: mensajesIA })
+    
     });
     const data = await res.json();
     loading.remove();
