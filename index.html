@@ -191,7 +191,7 @@ function expandirChatbot() {
   chatbot.onclick = null;
 
   if (interacciones === 0) {
-    const historial = JSON.parse(localStorage.getItem("chatHistorial")) || [];
+    const historial = JSON.parse(sessionStorage.getItem("chatHistorial")) || [];
     if (historial.length > 0) {
       historial.forEach(m => appendMessage(m.content, m.clase));
     } else {
@@ -220,9 +220,9 @@ function appendMessage(content, clase) {
   messages.appendChild(msg);
   messages.scrollTop = messages.scrollHeight;
 
-  let historial = JSON.parse(localStorage.getItem("chatHistorial")) || [];
+  let historial = JSON.parse(sessionStorage.getItem("chatHistorial")) || [];
   historial.push({ content, clase });
-  localStorage.setItem("chatHistorial", JSON.stringify(historial));
+  sessionStorage.setItem("chatHistorial", JSON.stringify(historial));
 }
 
 function handleKeyPress(e) {
