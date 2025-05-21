@@ -266,7 +266,7 @@ async function sendMessage() {
       nombreCliente = text.split(" ").slice(-1)[0];
     }
 
-    appendMessage(data.reply || "Lo siento, no pude responderte.", "bot");
+    appendMessage("<strong>Luz:</strong> " +(data.reply || "Lo siento, no pude responderte."), "bot");
     verificarYEnviarContacto(data.reply);
 
     const respuestaBot = (data.reply || "").toLowerCase();
