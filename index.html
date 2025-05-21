@@ -240,6 +240,15 @@ async function sendMessage() {
     ultimoInteres = text;
   }
 
+  const esMail = text.match(/[\w.-]+@[\w.-]+\.[a-zA-Z]{2,}/);
+  const esTelefono = text.match(/(\+?\d{2,4}[-.\s]?)?(\d{6,15})/);
+
+  if ((esMail || esTelefono) && nombreCliente && ultimoInteres) {
+    verificarYEnviarContacto(text);
+    appendMessage("<strong>Luz:</strong> ¡Gracias! Tomé nota de tu contacto para enviarte más info 😊", "bot");
+    return;
+  }
+
   const loading = document.createElement("div");
   loading.className = "bubble bot";
   loading.innerHTML = `<div class="typing-dots"><span></span><span></span><span></span></div>`;
@@ -260,8 +269,7 @@ async function sendMessage() {
     }
 
     appendMessage("<strong>Luz:</strong> " + (data.reply || "Lo siento, no pude responderte."), "bot");
-
-    verificarYEnviarContacto(data.reply); // ✅ Línea agregada
+    verificarYEnviarContacto(data.reply);
 
     const respuestaBot = (data.reply || "").toLowerCase();
     const frasesWhatsapp = [
