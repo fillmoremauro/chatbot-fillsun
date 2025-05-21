@@ -83,4 +83,39 @@ app.get("/test-openai", async (req, res) => {
   }
 });
 
+const nodemailer = require("nodemailer");
+
+app.post("/enviar-mail", async (req, res) => {
+  const { nombre, contacto, interes } = req.body;
+
+  try {
+    const transporter = nodemailer.createTransport({
+      host: "mail.jrfillmore.com.ar",
+      port: 465,
+      secure: true, // SSL/TLS
+      auth: {
+        user: process.env.MAIL_USER,
+        pass: process.env.MAIL_PASS
+      }
+    });
+
+    const info = await transporter.sendMail({
+      from: '"Luz - Chatbot Fillsun" <info@jrfillmore.com.ar>',
+      to: "ventas@energia-solar.com.ar",
+      subject: "📬 Nuevo contacto desde el chatbot de Fillsun",
+      html: `
+        <p><strong>Nombre:</strong> ${nombre}</p>
+        <p><strong>Contacto:</strong> ${contacto}</p>
+        <p><strong>Interés:</strong> ${interes}</p>
+        <p><em>Mensaje automático de Luz</em></p>
+      `
+    });
+
+    res.json({ ok: true, messageId: info.messageId });
+  } catch (err) {
+    console.error("Error al enviar mail:", err);
+    res.status(500).json({ ok: false, error: err.message });
+  }
+});
+
 app.listen(3000, () => console.log('✅ Luz online en puerto 3000 con frontend'));
