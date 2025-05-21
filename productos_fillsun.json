@@ -24,19 +24,25 @@
     "tipo": "no presurizado"
   },
   {
-    "nombre": "Termotanque solar 150L Presurizado",
+    "nombre": "Termotanque solar 200L de placa plana",
+    "url": "https://www.energia-solar.com.ar/?product=termotanque-solar-250-litros",
+    "categoria": "termotanques",
+    "tipo": "presurizado placa plana"
+  },
+  {
+    "nombre": "Termotanque solar 150L Presurizado heat pipe",
     "url": "https://www.energia-solar.com.ar/?product=termotanque-solar-heat-pipe-150-litros",
     "categoria": "termotanques",
     "tipo": "presurizado"
   },
   {
-    "nombre": "Termotanque solar 200L Presurizado",
+    "nombre": "Termotanque solar 200L Presurizado heat pipe",
     "url": "https://www.energia-solar.com.ar/?product=termotanque-solar-heat-pipe-200-litros",
     "categoria": "termotanques",
     "tipo": "presurizado"
   },
   {
-    "nombre": "Termotanque solar 250L Presurizado",
+    "nombre": "Termotanque solar 250L Presurizado heat pipe",
     "url": "https://www.energia-solar.com.ar/?product=termotanque-solar-heat-pipe-250-litros",
     "categoria": "termotanques",
     "tipo": "presurizado"
@@ -45,7 +51,7 @@
     "nombre": "Colector solar EPDM",
     "url": "https://www.energia-solar.com.ar/producto/colector-solar-epdm-para-piscina-3m2/",
     "categoria": "colectores",
-    "tipo": "piscinas"
+    "tipo": "calefaccion solar"
   },
   {
     "nombre": "Kit solar fotovoltaico",
@@ -60,18 +66,6 @@
     "tipo": "fotovoltaico"
   },
   {
-    "nombre": "Colector solar de placa plana",
-    "url": "https://www.energia-solar.com.ar/?product_cat=colectores_de_placa_plana",
-    "categoria": "colector solar",
-    "tipo": "Plana"
-  },
-  {
-    "nombre": "Colector solar heat pipe",
-    "url": "https://www.energia-solar.com.ar/?product_cat=colectores-heat-pipe",
-    "categoria": "colector solar",
-    "tipo": "plana"
-  },
-  {
     "nombre": "Termotanque solar placa plana",
     "url": "https://www.energia-solar.com.ar/?product_cat=termotanque_solar_de_placa_plana",
     "categoria": "Presurizado",
@@ -81,6 +75,6 @@
     "nombre": "Colector solar heat pipe",
     "url": "https://www.energia-solar.com.ar/?product_cat=colectores-heat-pipe",
     "categoria": "colector solar",
-    "tipo": "plana"
+    "tipo": "heat pipe"
   }
 ]
