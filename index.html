@@ -212,6 +212,13 @@ function minimizarChatbot(e) {
   window.parent.postMessage("minimizar", "*");
 }
 
+document.addEventListener("DOMContentLoaded", () => {
+  const chatbot = document.getElementById("chatbot");
+  if (chatbot && chatbot.classList.contains("minimizado")) {
+    chatbot.onclick = () => expandirChatbot();
+  }
+});
+
 function appendMessage(content, clase) {
   const messages = document.getElementById("chat-messages");
   const msg = document.createElement("div");
@@ -346,6 +353,7 @@ function verificarYEnviarContacto(respuestaTexto) {
     }).catch(err => console.warn("No se pudo enviar contacto:", err));
   }
 }
+
 </script>
 
 <a id="whatsapp-button"
