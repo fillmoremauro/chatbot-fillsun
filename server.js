@@ -7,6 +7,9 @@ const { OpenAI } = require('openai');
 const app = express();
 app.use(bodyParser.json());
 
+const cors = require("cors");
+app.use(cors());
+
 // Servir archivos estáticos (como index.html)
 app.use(express.static(path.join(__dirname)));
 
