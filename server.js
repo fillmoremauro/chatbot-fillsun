@@ -99,8 +99,8 @@ app.get("/test-openai", async (req, res) => {
     const completion = await openai.chat.completions.create({
       model: "gpt-4",
       messages: [
-        { role: "system", content: "Sos Luz, una asistente virtual del equipo Fillsun Argentina. Respondés siempre en ESPAÑOL con un tono cálido, humano, claro y profesional." },
-        { role: "user", content: "Decime si estás funcionando." }
+        { role: "system", content: systemPrompt },
+        { role: "user", content: "Hola, ¿cómo puedo ahorrar energía con Fillsun?" }
       ]
     });
     res.json({ status: "OK", reply: completion.choices[0].message.content });
