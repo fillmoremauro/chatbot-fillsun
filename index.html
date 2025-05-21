@@ -195,7 +195,7 @@ function expandirChatbot() {
     if (historial.length > 0) {
       historial.forEach(m => appendMessage(m.content, m.clase));
     } else {
-      appendMessage("<strong>Luz:</strong> ¡Hola! Soy Luz, parte del equipo de Fillsun. ¿Cómo te llamás?", "bot");
+      appendMessage("<strong>Luz:</strong> ¡Hola! Soy Luz ☀, parte del equipo de Fillsun. ¿Cómo te llamás?", "bot");
     }
     interacciones++;
   }
@@ -306,7 +306,7 @@ async function sendMessage() {
     );
     if (coincidencias.length > 0) {
       const prod = coincidencias[0];
-      const sugerencia = `👉 Te puede interesar este producto: <a href="${prod.url}" target="_blank">${prod.nombre}</a>`;
+      const sugerencia = `👉 Si deseas mirar los productos relacionados: <a href="${prod.url}" target="_blank">${prod.nombre}</a>`;
       appendMessage("<strong>Luz:</strong> " + sugerencia, "bot");
     }
   } catch (err) {
