@@ -313,6 +313,23 @@ async function sendMessage() {
     console.warn("No se pudieron cargar los productos:", err);
   }
 }
+// 🔄 Lógica de envío de mail si hay contacto válido
+function verificarYEnviarContacto(respuestaTexto) {
+  const contieneMail = respuestaTexto.match(/[\w.-]+@[\w.-]+\.[a-zA-Z]{2,}/);
+  const contieneTelefono = respuestaTexto.match(/(\+?\d{2,4}[-.\s]?)?(\d{6,15})/);
+
+  const contacto = contieneMail ? contieneMail[0] : contieneTelefono ? contieneTelefono[0] : null;
+
+  if (contacto && nombreCliente && ultimoInteres) {
+    fetch("/enviar-mail", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ nombre: nombreCliente, contacto, interes: ultimoInteres })
+    }).then(() => {
+      console.log("📧 Contacto enviado a ventas Fillsun");
+    }).catch(err => console.warn("No se pudo enviar contacto:", err));
+  }
+}
 </script>
 
 <a id="whatsapp-button"
