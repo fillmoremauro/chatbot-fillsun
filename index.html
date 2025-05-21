@@ -240,14 +240,12 @@ async function sendMessage() {
     ultimoInteres = text;
   }
 
-  const esMail = text.match(/[\w.-]+@[\w.-]+\.[a-zA-Z]{2,}/);
-  const esTelefono = text.match(/(\+?\d{2,4}[-.\s]?)?(\d{6,15})/);
-
-  if ((esMail || esTelefono) && nombreCliente && ultimoInteres) {
-    verificarYEnviarContacto(text);
-    appendMessage("<strong>Luz:</strong> ¡Gracias! Tomé nota de tu contacto para enviarte más info 😊", "bot");
-    return;
-  }
+  const historial = JSON.parse(sessionStorage.getItem("chatHistorial")) || [];
+  const mensajesIA = historial.map(m => ({
+    role: m.clase === "user" ? "user" : "assistant",
+    content: m.content.replace(/<[^>]*>/g, '')
+  }));
+  mensajesIA.unshift({ role: "system", content: "Sos Luz, una asistente virtual del equipo Fillsun Argentina. Respondés siempre en español con un tono cálido, humano, claro y profesional." });
 
   const loading = document.createElement("div");
   loading.className = "bubble bot";
@@ -259,7 +257,7 @@ async function sendMessage() {
     const res = await fetch("https://chatbot-fillsun.onrender.com/chat", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ message: text })
+      body: JSON.stringify({ messages: mensajesIA })
     });
     const data = await res.json();
     loading.remove();
@@ -334,7 +332,7 @@ function verificarYEnviarContacto(respuestaTexto) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ nombre: nombreCliente, contacto, interes: ultimoInteres })
     }).then(() => {
-      console.log("\uD83D\uDCE7 Contacto enviado a ventas Fillsun");
+      console.log("📧 Contacto enviado a ventas Fillsun");
     }).catch(err => console.warn("No se pudo enviar contacto:", err));
   }
 }
