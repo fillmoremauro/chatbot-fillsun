@@ -106,7 +106,7 @@ const nodemailer = require("nodemailer");
 
 app.post("/enviar-mail", async (req, res) => {
   const { nombre, contacto, interes } = req.body;
-
+  console.log("📨 Recibido contacto:", req.body);
   try {
     const transporter = nodemailer.createTransport({
       host: "mail.jrfillmore.com.ar",
