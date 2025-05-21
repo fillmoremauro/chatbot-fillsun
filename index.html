@@ -199,7 +199,7 @@ function expandirChatbot() {
     }
     interacciones++;
   }
-  
+
   window.parent.postMessage("expandir", "*");
 }
 
@@ -220,7 +220,6 @@ function appendMessage(content, clase) {
   messages.appendChild(msg);
   messages.scrollTop = messages.scrollHeight;
 
-  // Guardar historial en localStorage
   let historial = JSON.parse(localStorage.getItem("chatHistorial")) || [];
   historial.push({ content, clase });
   localStorage.setItem("chatHistorial", JSON.stringify(historial));
@@ -262,6 +261,8 @@ async function sendMessage() {
 
     appendMessage("<strong>Luz:</strong> " + (data.reply || "Lo siento, no pude responderte."), "bot");
 
+    verificarYEnviarContacto(data.reply); // ✅ Línea agregada
+
     const respuestaBot = (data.reply || "").toLowerCase();
     const frasesWhatsapp = [
       "seguí por whatsapp",
@@ -294,7 +295,6 @@ async function sendMessage() {
     appendMessage("<strong>Luz:</strong> Error al conectar con el servidor.", "bot");
   }
 
-  // Búsqueda de productos
   try {
     const resp = await fetch(URL_PRODUCTOS);
     const productos = await resp.json();
@@ -313,7 +313,7 @@ async function sendMessage() {
     console.warn("No se pudieron cargar los productos:", err);
   }
 }
-// 🔄 Lógica de envío de mail si hay contacto válido
+
 function verificarYEnviarContacto(respuestaTexto) {
   const contieneMail = respuestaTexto.match(/[\w.-]+@[\w.-]+\.[a-zA-Z]{2,}/);
   const contieneTelefono = respuestaTexto.match(/(\+?\d{2,4}[-.\s]?)?(\d{6,15})/);
@@ -326,7 +326,7 @@ function verificarYEnviarContacto(respuestaTexto) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ nombre: nombreCliente, contacto, interes: ultimoInteres })
     }).then(() => {
-      console.log("📧 Contacto enviado a ventas Fillsun");
+      console.log("\uD83D\uDCE7 Contacto enviado a ventas Fillsun");
     }).catch(err => console.warn("No se pudo enviar contacto:", err));
   }
 }
