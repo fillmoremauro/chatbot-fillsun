@@ -165,17 +165,9 @@
 </head>
 <body>
 
-<div id="chatbot" class="minimizado" onclick="expandirChatbot()">
-  <div id="chat-header">
-    <div id="minimizar" onclick="minimizarChatbot(event)">&minus;</div>
-    <img src="Logo.png" alt="Logo Fillsun">
-    <div>Equipo Fillsun en línea <span class="status-dot"></span></div>
-  </div>
-  <div id="chat-messages"></div>
-  <div id="chat-input">
-    <input type="text" id="userInput" placeholder="Escribí tu consulta..." onkeypress="handleKeyPress(event)" />
-    <button onclick="sendMessage()">Enviar</button>
-  </div>
+  <div id="chatbot" class="minimizado" onclick="expandirChatbot()">
+  <div id="chat-messages" class="chat-window"></div>
+  <input id="userInput" type="text" onkeypress="handleKeyPress(event)" placeholder="Escribí tu mensaje..." autocomplete="off" />
 </div>
 
 <script>
@@ -262,19 +254,18 @@ async function sendMessage() {
   document.getElementById("chat-messages").appendChild(loading);
   document.getElementById("chat-messages").scrollTop = 99999;
 
+  const historial = JSON.parse(sessionStorage.getItem("chatHistorial")) || [];
+  const mensajesIA = historial.map(m => ({
+    role: m.clase === "user" ? "user" : "assistant",
+    content: m.content.replace(/<[^>]*>/g, '')
+  }));
+  mensajesIA.unshift({ role: "system", content: "Sos Luz, una asistente virtual del equipo Fillsun Argentina. Respondés siempre en español, con un tono cálido, humano, claro y profesional. Tus respuestas deben ser breves, útiles y directas, sin extenderte innecesariamente." });
+
   try {
     const res = await fetch("https://chatbot-fillsun.onrender.com/chat", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      const historial = JSON.parse(sessionStorage.getItem("chatHistorial")) || [];
-    const mensajesIA = historial.map(m => ({
-      role: m.clase === "user" ? "user" : "assistant",
-      content: m.content.replace(/<[^>]*>/g, '') // Limpia etiquetas HTML
-    }));
-
-  mensajesIA.unshift({ role: "system", content: systemPrompt });
-  body: JSON.stringify({ messages: mensajesIA })
-    
+      body: JSON.stringify({ messages: mensajesIA })
     });
     const data = await res.json();
     loading.remove();
@@ -349,11 +340,10 @@ function verificarYEnviarContacto(respuestaTexto) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ nombre: nombreCliente, contacto, interes: ultimoInteres })
     }).then(() => {
-      console.log("\uD83D\uDCE7 Contacto enviado a ventas Fillsun");
+      console.log("📧 Contacto enviado a ventas Fillsun");
     }).catch(err => console.warn("No se pudo enviar contacto:", err));
   }
 }
-
 </script>
 
 <a id="whatsapp-button"
