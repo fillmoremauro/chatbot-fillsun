@@ -68,17 +68,22 @@ Recordá siempre que sos parte real del equipo Fillsun, y quieres ayudar a ahorr
 `;
 
 app.post('/chat', async (req, res) => {
-  const { message } = req.body;
+  const { messages } = req.body;
+
+  if (!Array.isArray(messages)) {
+    return res.status(400).json({ error: "Formato de mensajes inválido." });
+  }
+
   try {
     const completion = await openai.chat.completions.create({
       model: "gpt-4",
-      messages: [
-        { role: "system", content: systemPrompt },
-        { role: "user", content: message }
-      ]
+      messages: messages,
+      temperature: 0.7
     });
+
     res.json({ reply: completion.choices[0].message.content });
   } catch (e) {
+    console.error("Error en /chat:", e);
     res.status(500).json({ error: e.message });
   }
 });
