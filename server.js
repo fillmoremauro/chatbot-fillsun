@@ -112,7 +112,7 @@ app.get("/test-openai", async (req, res) => {
 const nodemailer = require("nodemailer");
 
 app.post("/enviar-mail", async (req, res) => {
-  const { nombre, contacto, interes } = req.body;
+  const { nombre, contacto, interes, email } = req.body;
   console.log("📨 Recibido contacto:", req.body);
   try {
     const transporter = nodemailer.createTransport({
@@ -133,6 +133,7 @@ app.post("/enviar-mail", async (req, res) => {
         <p><strong>Nombre:</strong> ${nombre}</p>
         <p><strong>Contacto:</strong> ${contacto}</p>
         <p><strong>Interés:</strong> ${interes}</p>
+        ${email ? `<p><strong>Email:</strong> ${email}</p>` : ""}
         <p><em>Mensaje automático de Luz</em></p>
       `
     });
