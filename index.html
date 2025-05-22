@@ -171,8 +171,12 @@
     <img src="Logo.png" alt="Logo Fillsun">
     <div>Equipo Fillsun en línea <span class="status-dot"></span></div>
   </div>
-  <div id="chat-messages"></div>
-  <div id="chat-input">
+  <div id="chat-email">
+    <input type="email" id="emailInput" placeholder="Ingresá tu email para comenzar" onkeypress="handleEmailKey(event)" />
+    <button onclick="iniciarConversacionConEmail()">Iniciar</button>
+  </div>
+  <div id="chat-messages" style="display:none"></div>
+  <div id="chat-input" style="display:none">
     <input type="text" id="userInput" placeholder="Escribí tu consulta..." onkeypress="handleKeyPress(event)" />
     <button onclick="sendMessage()">Enviar</button>
   </div>
@@ -182,25 +186,15 @@
 let ultimoInteres = "";
 let nombreCliente = "";
 let interacciones = 0;
+let emailCliente = "";
 const URL_PRODUCTOS = "https://chatbot-fillsun.onrender.com/productos_fillsun.json";
-const systemPrompt = `Sos Luz, una asistente virtual del equipo Fillsun Argentina. Respondés siempre en español, con un tono cálido, humano, claro y profesional. Tus respuestas deben ser breves, útiles y directas. Mostrás empatía y ayudás al cliente a ahorrar energía con productos de Fillsun.`;
+const systemPrompt = `Sos Luz, una asistente virtual del equipo Fillsun Argentina. Respondés siempre en español con un tono cálido, humano, claro y profesional. Tus respuestas deben ser breves, útiles y orientadas a resolver dudas o generar interés en soluciones solares de Fillsun.`;
 
 function expandirChatbot() {
   const chatbot = document.getElementById("chatbot");
   chatbot.classList.remove("minimizado");
   chatbot.classList.add("expandido");
   chatbot.onclick = null;
-
-  if (interacciones === 0) {
-    const historial = JSON.parse(sessionStorage.getItem("chatHistorial")) || [];
-    if (historial.length > 0) {
-      historial.forEach(m => appendMessage(m.content, m.clase));
-    } else {
-      appendMessage("<strong>Luz:</strong> ¡Hola! Soy Luz ☀, parte del equipo de Fillsun. ¿Cómo te llamás?", "bot");
-    }
-    interacciones++;
-  }
-
   window.parent.postMessage("expandir", "*");
 }
 
@@ -217,7 +211,12 @@ function appendMessage(content, clase) {
   const messages = document.getElementById("chat-messages");
   const msg = document.createElement("div");
   msg.className = "bubble " + clase;
-  msg.innerHTML = content;
+  if (clase === "bot") {
+    const limpio = content.replace(/^\s*(Luz[:：])\s*/i, "").trim();
+    msg.innerHTML = "<strong>Luz:</strong> " + limpio;
+  } else {
+    msg.innerHTML = content;
+  }
   messages.appendChild(msg);
   messages.scrollTop = messages.scrollHeight;
 
@@ -228,6 +227,21 @@ function appendMessage(content, clase) {
 
 function handleKeyPress(e) {
   if (e.key === "Enter") sendMessage();
+}
+
+function handleEmailKey(e) {
+  if (e.key === "Enter") iniciarConversacionConEmail();
+}
+
+function iniciarConversacionConEmail() {
+  const input = document.getElementById("emailInput");
+  const email = input.value.trim();
+  if (!email || !email.includes("@")) return;
+  emailCliente = email;
+  document.getElementById("chat-email").style.display = "none";
+  document.getElementById("chat-messages").style.display = "flex";
+  document.getElementById("chat-input").style.display = "flex";
+  appendMessage("<strong>Luz:</strong> ¡Hola! Soy Luz ☀, parte del equipo de Fillsun. ¿Cómo te llamás?", "bot");
 }
 
 async function sendMessage() {
@@ -241,15 +255,6 @@ async function sendMessage() {
     ultimoInteres = text;
   }
 
-  const esMail = text.match(/[\w.-]+@[\w.-]+\.[a-zA-Z]{2,}/);
-  const esTelefono = text.match(/(\+?\d{2,4}[-.\s]?)?(\d{6,15})/);
-
-  if ((esMail || esTelefono) && nombreCliente && ultimoInteres) {
-    verificarYEnviarContacto(text);
-    appendMessage("<strong>Luz:</strong> ¡Gracias! Tomé nota de tu contacto para enviarte más info 😊", "bot");
-    return;
-  }
-
   const loading = document.createElement("div");
   loading.className = "bubble bot";
   loading.innerHTML = `<div class="typing-dots"><span></span><span></span><span></span></div>`;
@@ -257,19 +262,19 @@ async function sendMessage() {
   document.getElementById("chat-messages").scrollTop = 99999;
 
   try {
-    const res = await fetch("https://chatbot-fillsun.onrender.com/chat", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      const historial = JSON.parse(sessionStorage.getItem("chatHistorial")) || [];
+    const historial = JSON.parse(sessionStorage.getItem("chatHistorial")) || [];
     const mensajesIA = historial.map(m => ({
       role: m.clase === "user" ? "user" : "assistant",
       content: m.content.replace(/<[^>]*>/g, '')
     }));
-mensajesIA.unshift({ role: "system", content: systemPrompt });
+    mensajesIA.unshift({ role: "system", content: systemPrompt });
 
-body: JSON.stringify({ messages: mensajesIA })
-
+    const res = await fetch("https://chatbot-fillsun.onrender.com/chat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ messages: mensajesIA })
     });
+
     const data = await res.json();
     loading.remove();
 
@@ -277,84 +282,19 @@ body: JSON.stringify({ messages: mensajesIA })
       nombreCliente = text.split(" ").slice(-1)[0];
     }
 
-    appendMessage("<strong>Luz:</strong> " + (data.reply || "Lo siento, no pude responderte."), "bot");
-    verificarYEnviarContacto(data.reply);
-
-    const respuestaBot = (data.reply || "").toLowerCase();
-    const frasesWhatsapp = [
-      "seguí por whatsapp",
-      "podés seguir por whatsapp",
-      "te sugiero que sigamos por whatsapp",
-      "¿querés que lo hablemos por whatsapp?",
-      "podés escribirnos por whatsapp",
-      "contactate por whatsapp",
-      "podemos continuar por whatsapp",
-      "te paso el whatsapp",
-      "te dejo el link de whatsapp",
-      "seguimos por whatsapp"
-    ];
-
-    const boton = document.getElementById("whatsapp-button");
-    const fraseDetectada = frasesWhatsapp.some(f => respuestaBot.includes(f));
-
-    if (fraseDetectada) {
-      const nombre = nombreCliente || "cliente";
-      const resumen = ultimoInteres || "un producto solar";
-      const mensaje = encodeURIComponent(`Hola, me llamo ${nombre} y estuve hablando con Luz sobre: "${resumen}"`);
-      boton.href = `https://wa.me/5491133480020?text=${mensaje}`;
-      boton.style.display = "block";
-    } else {
-      boton.style.display = "none";
-    }
-
+    const respuestaLimpia = (data.reply || "").replace(/^Luz[:：]\s*/i, "").trim();
+    appendMessage(respuestaLimpia, "bot");
   } catch (err) {
     loading.remove();
-    appendMessage("<strong>Luz:</strong> Error al conectar con el servidor.", "bot");
-  }
-
-  try {
-    const resp = await fetch(URL_PRODUCTOS);
-    const productos = await resp.json();
-    const consulta = text.toLowerCase();
-    const coincidencias = productos.filter(p =>
-      p.nombre.toLowerCase().includes(consulta) ||
-      (p.categoria && consulta.includes(p.categoria.toLowerCase())) ||
-      (p.tipo && consulta.includes(p.tipo.toLowerCase()))
-    );
-    if (coincidencias.length > 0) {
-      const prod = coincidencias[0];
-      const sugerencia = `👉 Si deseas mirar los productos relacionados: <a href="${prod.url}" target="_blank">${prod.nombre}</a>`;
-      appendMessage("<strong>Luz:</strong> " + sugerencia, "bot");
-    }
-  } catch (err) {
-    console.warn("No se pudieron cargar los productos:", err);
-  }
-}
-
-function verificarYEnviarContacto(respuestaTexto) {
-  const contieneMail = respuestaTexto.match(/[\w.-]+@[\w.-]+\.[a-zA-Z]{2,}/);
-  const contieneTelefono = respuestaTexto.match(/(\+?\d{2,4}[-.\s]?)?(\d{6,15})/);
-
-  const contacto = contieneMail ? contieneMail[0] : contieneTelefono ? contieneTelefono[0] : null;
-
-  if (contacto && nombreCliente && ultimoInteres) {
-    fetch("/enviar-mail", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ nombre: nombreCliente, contacto, interes: ultimoInteres })
-    }).then(() => {
-      console.log("\uD83D\uDCE7 Contacto enviado a ventas Fillsun");
-    }).catch(err => console.warn("No se pudo enviar contacto:", err));
+    appendMessage("Error al conectar con el servidor.", "bot");
   }
 }
 </script>
 
-<a id="whatsapp-button"
-   href="#"
-   target="_blank"
+<div id="whatsapp-button"
    style="display: none; position: fixed; bottom: 100px; right: 20px; background-color: #25d366; color: white; padding: 12px 18px; border-radius: 50px; text-decoration: none; font-weight: bold; z-index: 999;">
    📲 WhatsApp
-</a>
+</div>
 
 </body>
 </html>
