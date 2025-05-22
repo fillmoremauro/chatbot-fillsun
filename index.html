@@ -251,7 +251,8 @@ async function sendMessage() {
   appendMessage("<strong>" + (nombreCliente || "Vos") + ":</strong> " + text, "user");
   input.value = "";
 
-  if (!text.toLowerCase().includes("whatsapp")) {
+  const contieneTelefono = text.match(/(\+?\d{2,4}[-.\s]?)?(\d{6,15})/);
+  if (!text.toLowerCase().includes("whatsapp") && !contieneTelefono) {
     const historial = JSON.parse(sessionStorage.getItem("chatHistorial")) || [];
     const resumen = historial
       .filter(m => m.clase === "user")
