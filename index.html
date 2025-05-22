@@ -22,7 +22,7 @@
       bottom: 20px;
       right: 20px;
       width: 380px;
-      height: 120px;
+      height: 40vh;
       border-radius: 12px;
       background-color: white;
       box-shadow: 0 0 12px rgba(0,0,0,0.2);
@@ -261,8 +261,9 @@ function handleEmailKey(e) {
 }
 
 function iniciarConversacionConEmail() {
+  document.getElementById("chatbot").style.height = "520px";
   const input = document.getElementById("emailInput");
-  const email = input.value.trim();
+    const email = input.value.trim();
   if (!email || !email.includes("@")) return;
   emailCliente = email;
   document.getElementById("chat-email").style.display = "none";
