@@ -216,7 +216,7 @@ function appendMessage(content, clase) {
   const messages = document.getElementById("chat-messages");
   const msg = document.createElement("div");
   msg.className = "bubble " + clase;
-  msg.innerHTML = content;
+  msg.innerHTML = (clase === "bot" ? "<strong>Luz:</strong> " : "") + content;
   messages.appendChild(msg);
   messages.scrollTop = messages.scrollHeight;
 
@@ -240,12 +240,14 @@ async function sendMessage() {
     ultimoInteres = text;
   }
 
-  const historial = JSON.parse(sessionStorage.getItem("chatHistorial")) || [];
-  const mensajesIA = historial.map(m => ({
-    role: m.clase === "user" ? "user" : "assistant",
-    content: m.content.replace(/<[^>]*>/g, '')
-  }));
-  mensajesIA.unshift({ role: "system", content: "Sos Luz, una asistente virtual del equipo Fillsun Argentina. Respondés siempre en español con un tono cálido, humano, claro y profesional." });
+  const esMail = text.match(/[\w.-]+@[\w.-]+\.[a-zA-Z]{2,}/);
+  const esTelefono = text.match(/(\+?\d{2,4}[-.\s]?)?(\d{6,15})/);
+
+  if ((esMail || esTelefono) && nombreCliente && ultimoInteres) {
+    verificarYEnviarContacto(text);
+    appendMessage("¡Gracias! Tomé nota de tu contacto para enviarte más info 😊", "bot");
+    return;
+  }
 
   const loading = document.createElement("div");
   loading.className = "bubble bot";
@@ -254,11 +256,19 @@ async function sendMessage() {
   document.getElementById("chat-messages").scrollTop = 99999;
 
   try {
+    const historial = JSON.parse(sessionStorage.getItem("chatHistorial")) || [];
+    const mensajesIA = historial.map(m => ({
+      role: m.clase === "user" ? "user" : "assistant",
+      content: m.content.replace(/<[^>]*>/g, "")
+    }));
+    mensajesIA.unshift({ role: "system", content: systemPrompt });
+
     const res = await fetch("https://chatbot-fillsun.onrender.com/chat", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ messages: mensajesIA })
     });
+
     const data = await res.json();
     loading.remove();
 
@@ -266,7 +276,7 @@ async function sendMessage() {
       nombreCliente = text.split(" ").slice(-1)[0];
     }
 
-    const respuestaLimpia = (data.reply || "").replace(/^Luz[:：]\\s*/i, "").trim();
+    const respuestaLimpia = (data.reply || "").replace(/^Luz[:：]\s*/i, "").trim();
     appendMessage(respuestaLimpia, "bot");
     verificarYEnviarContacto(data.reply);
 
@@ -280,9 +290,7 @@ async function sendMessage() {
       "contactate por whatsapp",
       "podemos continuar por whatsapp",
       "te paso el whatsapp",
-      "charlemos por WhatsApp",
       "te dejo el link de whatsapp",
-      "info por whatsapp",
       "seguimos por whatsapp"
     ];
 
@@ -298,10 +306,9 @@ async function sendMessage() {
     } else {
       boton.style.display = "none";
     }
-
   } catch (err) {
     loading.remove();
-    appendMessage("<strong>Luz:</strong> Error al conectar con el servidor.", "bot");
+    appendMessage("Error al conectar con el servidor.", "bot");
   }
 
   try {
@@ -316,7 +323,7 @@ async function sendMessage() {
     if (coincidencias.length > 0) {
       const prod = coincidencias[0];
       const sugerencia = `👉 Si deseas mirar los productos relacionados: <a href="${prod.url}" target="_blank">${prod.nombre}</a>`;
-      appendMessage("<strong>Luz:</strong> " + sugerencia, "bot");
+      appendMessage(sugerencia, "bot");
     }
   } catch (err) {
     console.warn("No se pudieron cargar los productos:", err);
