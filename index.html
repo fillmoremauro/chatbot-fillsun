@@ -223,19 +223,14 @@ const systemPrompt = `Sos Luz, una asistente virtual del equipo Fillsun Argentin
 
 function expandirChatbot() {
   const chatbot = document.getElementById("chatbot");
-  chatbot.classList.remove("minimizado");
-  chatbot.classList.add("parcial");
+  chatbot.classList.remove("minimizado", "parcial");
+  if (document.getElementById("chat-messages").style.display === "flex") {
+    chatbot.classList.add("expandido");
+  } else {
+    chatbot.classList.add("parcial");
+  }
   chatbot.onclick = null;
   window.parent.postMessage("expandir", "*");
-}
-
-function minimizarChatbot(e) {
-  e.stopPropagation();
-  const chatbot = document.getElementById("chatbot");
-  chatbot.classList.remove("expandido");
-  chatbot.classList.add("minimizado");
-  chatbot.onclick = () => expandirChatbot();
-  window.parent.postMessage("minimizar", "*");
 }
 
 function appendMessage(content, clase) {
