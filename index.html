@@ -33,6 +33,10 @@
       z-index: 998;
       cursor: pointer;
     }
+    #chatbot.parcial {
+      height: 200px; /* altura para email */
+      cursor: default;
+    }
     #chatbot.expandido {
       height: 520px;
       cursor: default;
@@ -220,7 +224,7 @@ const systemPrompt = `Sos Luz, una asistente virtual del equipo Fillsun Argentin
 function expandirChatbot() {
   const chatbot = document.getElementById("chatbot");
   chatbot.classList.remove("minimizado");
-  chatbot.classList.add("expandido");
+  chatbot.classList.add("parcial");
   chatbot.onclick = null;
   window.parent.postMessage("expandir", "*");
 }
@@ -261,15 +265,18 @@ function handleEmailKey(e) {
 }
 
 function iniciarConversacionConEmail() {
-  document.getElementById("chatbot").style.height = "520px";
   const input = document.getElementById("emailInput");
-    const email = input.value.trim();
+  const email = input.value.trim();
   if (!email || !email.includes("@")) return;
   emailCliente = email;
-  document.getElementById("chatbot").classList.add("expandido");
   document.getElementById("chat-email").style.display = "none";
   document.getElementById("chat-messages").style.display = "flex";
   document.getElementById("chat-input").style.display = "flex";
+
+  const chatbot = document.getElementById("chatbot");
+  chatbot.classList.remove("parcial");
+  chatbot.classList.add("expandido");
+
   appendMessage("¡Hola! Soy Luz ☀️, parte del equipo de Fillsun. ¿Cómo te llamás?", "bot");
 }
 
