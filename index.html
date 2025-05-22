@@ -252,7 +252,14 @@ async function sendMessage() {
   input.value = "";
 
   if (!text.toLowerCase().includes("whatsapp")) {
-    ultimoInteres = text;
+    const historial = JSON.parse(sessionStorage.getItem("chatHistorial")) || [];
+    const resumen = historial
+      .filter(m => m.clase === "user")
+      .map(m => m.content.replace(/<[^>]*>/g, '').trim())
+      .filter(linea => linea.length > 0 && linea.length < 120)
+      .slice(-3)
+      .join(" | ");
+    ultimoInteres = resumen || text;
   }
 
   const loading = document.createElement("div");
