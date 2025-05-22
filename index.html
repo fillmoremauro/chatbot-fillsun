@@ -326,11 +326,6 @@ async function sendMessage() {
     if (nombreCliente === "") {
       nombreCliente = text.split(" ").slice(-1)[0];
     }
-    interacciones++;
-    if (interacciones === 3 && !sessionStorage.getItem("telefonoSolicitado")) {
-    appendMessage("¿Querés dejar tu número de teléfono para asesorarte mejor? 😊", "bot");
-    sessionStorage.setItem("telefonoSolicitado", "true");
-    }
     const contieneTelefono = text.match(/(\+?\d{2,4}[-.\s]?)?(\d{6,15})/);
     if (contieneTelefono && nombreCliente && ultimoInteres && emailCliente) {
       const telefonoDetectado = contieneTelefono[0];
@@ -350,6 +345,13 @@ async function sendMessage() {
 
     const respuestaLimpia = (data.reply || "").replace(/^Luz[:：]\s*/i, "").trim();
     appendMessage(respuestaLimpia, "bot");
+
+    interacciones++;
+    if (interacciones === 3 && !sessionStorage.getItem("telefonoSolicitado")) {
+      appendMessage("¿Querés dejar tu número de teléfono para asesorarte mejor? 😊", "bot");
+      sessionStorage.setItem("telefonoSolicitado", "true");
+    }
+    
   } catch (err) {
     loading.remove();
     appendMessage("Error al conectar con el servidor.", "bot");
