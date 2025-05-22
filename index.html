@@ -225,7 +225,6 @@ function appendMessage(content, clase) {
   sessionStorage.setItem("chatHistorial", JSON.stringify(historial));
 }
 
-
 function handleKeyPress(e) {
   if (e.key === "Enter") sendMessage();
 }
@@ -246,7 +245,7 @@ async function sendMessage() {
 
   if ((esMail || esTelefono) && nombreCliente && ultimoInteres) {
     verificarYEnviarContacto(text);
-    appendMessage("¡Gracias! Tomé nota de tu contacto para enviarte más info 😊", "bot");
+    appendMessage("<strong>Luz:</strong> ¡Gracias! Tomé nota de tu contacto para enviarte más info 😊", "bot");
     return;
   }
 
@@ -257,19 +256,11 @@ async function sendMessage() {
   document.getElementById("chat-messages").scrollTop = 99999;
 
   try {
-    const historial = JSON.parse(sessionStorage.getItem("chatHistorial")) || [];
-    const mensajesIA = historial.map(m => ({
-      role: m.clase === "user" ? "user" : "assistant",
-      content: m.content.replace(/<[^>]*>/g, "")
-    }));
-    mensajesIA.unshift({ role: "system", content: systemPrompt });
-
     const res = await fetch("https://chatbot-fillsun.onrender.com/chat", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ messages: mensajesIA })
+      body: JSON.stringify({ message: text })
     });
-
     const data = await res.json();
     loading.remove();
 
@@ -277,8 +268,7 @@ async function sendMessage() {
       nombreCliente = text.split(" ").slice(-1)[0];
     }
 
-    const respuestaLimpia = (data.reply || "").replace(/^Luz[:：]\s*/i, "").trim();
-    appendMessage(respuestaLimpia, "bot");
+    appendMessage("<strong>Luz:</strong> " + (data.reply || "Lo siento, no pude responderte."), "bot");
     verificarYEnviarContacto(data.reply);
 
     const respuestaBot = (data.reply || "").toLowerCase();
@@ -307,9 +297,10 @@ async function sendMessage() {
     } else {
       boton.style.display = "none";
     }
+
   } catch (err) {
     loading.remove();
-    appendMessage("Error al conectar con el servidor.", "bot");
+    appendMessage("<strong>Luz:</strong> Error al conectar con el servidor.", "bot");
   }
 
   try {
@@ -324,7 +315,7 @@ async function sendMessage() {
     if (coincidencias.length > 0) {
       const prod = coincidencias[0];
       const sugerencia = `👉 Si deseas mirar los productos relacionados: <a href="${prod.url}" target="_blank">${prod.nombre}</a>`;
-      appendMessage(sugerencia, "bot");
+      appendMessage("<strong>Luz:</strong> " + sugerencia, "bot");
     }
   } catch (err) {
     console.warn("No se pudieron cargar los productos:", err);
@@ -343,7 +334,7 @@ function verificarYEnviarContacto(respuestaTexto) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ nombre: nombreCliente, contacto, interes: ultimoInteres })
     }).then(() => {
-      console.log("📧 Contacto enviado a ventas Fillsun");
+      console.log("\uD83D\uDCE7 Contacto enviado a ventas Fillsun");
     }).catch(err => console.warn("No se pudo enviar contacto:", err));
   }
 }
