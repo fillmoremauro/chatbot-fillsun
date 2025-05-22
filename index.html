@@ -276,10 +276,76 @@ async function sendMessage() {
     });
 
     const data = await res.json();
+
+    // Mostrar productos relacionados si hay coincidencia
+    try {
+      const resp = await fetch(URL_PRODUCTOS);
+      const productos = await resp.json();
+      const consulta = text.toLowerCase();
+      const coincidencias = productos.filter(p =>
+        p.nombre.toLowerCase().includes(consulta) ||
+        (p.categoria && consulta.includes(p.categoria.toLowerCase())) ||
+        (p.tipo && consulta.includes(p.tipo.toLowerCase()))
+      );
+      if (coincidencias.length > 0) {
+        const prod = coincidencias[0];
+        const sugerencia = `👉 Si deseas mirar los productos relacionados: <a href="${prod.url}" target="_blank">${prod.nombre}</a>`;
+        appendMessage(sugerencia, "bot");
+      }
+    } catch (err) {
+      console.warn("No se pudieron cargar los productos:", err);
+    }
+
+    // Mostrar botón de WhatsApp si se detecta invitación
+    const respuestaBot = (data.reply || "").toLowerCase();
+    const frasesWhatsapp = [
+      "seguí por whatsapp",
+      "podés seguir por whatsapp",
+      "te sugiero que sigamos por whatsapp",
+      "¿querés que lo hablemos por whatsapp?",
+      "podés escribirnos por whatsapp",
+      "contactate por whatsapp",
+      "podemos continuar por whatsapp",
+      "te paso el whatsapp",
+      "te dejo el link de whatsapp",
+      "seguimos por whatsapp"
+    ];
+    const boton = document.getElementById("whatsapp-button");
+    const fraseDetectada = frasesWhatsapp.some(f => respuestaBot.includes(f));
+    if (fraseDetectada) {
+      const nombre = nombreCliente || "cliente";
+      const resumen = ultimoInteres || "un producto solar";
+      const mensaje = encodeURIComponent(`Hola, me llamo ${nombre} y estuve hablando con Luz sobre: \"${resumen}\"`);
+      boton.href = `https://wa.me/5491133480020?text=${mensaje}`;
+      boton.style.display = "block";
+    } else {
+      boton.style.display = "none";
+    }
     loading.remove();
 
     if (nombreCliente === "") {
       nombreCliente = text.split(" ").slice(-1)[0];
+    }
+    interacciones++;
+    if (interacciones === 3 && !sessionStorage.getItem("telefonoSolicitado")) {
+    appendMessage("¿Querés dejar tu número de teléfono para asesorarte mejor? 😊", "bot");
+    sessionStorage.setItem("telefonoSolicitado", "true");
+    }
+    const contieneTelefono = text.match(/(\+?\d{2,4}[-.\s]?)?(\d{6,15})/);
+    if (contieneTelefono && nombreCliente && ultimoInteres && emailCliente) {
+      const telefonoDetectado = contieneTelefono[0];
+      fetch("/enviar-mail", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          nombre: nombreCliente,
+          contacto: telefonoDetectado,
+          interes: ultimoInteres,
+          email: emailCliente
+        })
+      }).then(() => {
+        console.log("📧 Teléfono enviado a ventas Fillsun");
+      }).catch(err => console.warn("No se pudo enviar el teléfono:", err));
     }
 
     const respuestaLimpia = (data.reply || "").replace(/^Luz[:：]\s*/i, "").trim();
