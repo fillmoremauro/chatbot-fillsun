@@ -183,6 +183,7 @@ let ultimoInteres = "";
 let nombreCliente = "";
 let interacciones = 0;
 const URL_PRODUCTOS = "https://chatbot-fillsun.onrender.com/productos_fillsun.json";
+const systemPrompt = `Sos Luz, una asistente virtual del equipo Fillsun Argentina. Respondés siempre en español, con un tono cálido, humano, claro y profesional. Tus respuestas deben ser breves, útiles y directas. Mostrás empatía y ayudás al cliente a ahorrar energía con productos de Fillsun.`;
 
 function expandirChatbot() {
   const chatbot = document.getElementById("chatbot");
@@ -259,7 +260,15 @@ async function sendMessage() {
     const res = await fetch("https://chatbot-fillsun.onrender.com/chat", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ message: text })
+      const historial = JSON.parse(sessionStorage.getItem("chatHistorial")) || [];
+    const mensajesIA = historial.map(m => ({
+      role: m.clase === "user" ? "user" : "assistant",
+      content: m.content.replace(/<[^>]*>/g, '')
+    }));
+mensajesIA.unshift({ role: "system", content: systemPrompt });
+
+body: JSON.stringify({ messages: mensajesIA })
+
     });
     const data = await res.json();
     loading.remove();
