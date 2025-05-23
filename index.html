@@ -233,6 +233,16 @@ function expandirChatbot() {
   window.parent.postMessage("expandir", "*");
 }
 
+function minimizarChatbot(e) {
+  e.stopPropagation();
+  const chatbot = document.getElementById("chatbot");
+  chatbot.classList.remove("expandido", "parcial");
+  chatbot.classList.add("minimizado");
+  chatbot.onclick = () => expandirChatbot();
+  window.parent.postMessage("minimizar", "*");
+}
+ 
+  
 function appendMessage(content, clase) {
   const messages = document.getElementById("chat-messages");
   const msg = document.createElement("div");
