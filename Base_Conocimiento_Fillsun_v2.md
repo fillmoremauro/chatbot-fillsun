@@ -13,6 +13,7 @@
 - **Presión máx. de trabajo**: 0.4 bar (no se recomienda presurizar)
 - **Rango de temperatura**: hasta 0°C o 5°C (usar heat pipe en temperaturas más bajas)
 - **Requiere que sea instalado por debajo del nivel minimo del tanque de agua de la casa, requieren de un venteo.
+- **No pueden ser instalados con bombas presurizadoras.
 
 ### 1.2 Presurizados (Heat Pipe)
 - Fabricados bajo normas ISO 9001:2008 – HL-High efficiency “A” – Solar CEN Keymark EN12975-1/2:2006 + A1:2010 y certificados internacionales
@@ -24,6 +25,7 @@
 - **Presión máx. de trabajo**: hasta 6 bares
 - **Rango de temperatura**: hasta -15°C
 - **Trabajan con una valvula de sobrepresion.
+- **Pueden ser utilizados con bomba presurizadora.
 
 ### 1.3 Capacidades recomendadas para termotanques solares
 - 100L: hasta 2 a 3 personas
@@ -59,7 +61,7 @@
 - Paneles fotovoltaicos monocristalinos y policristalinos
 - Potencias comunes: 100W, 160W, 285W, 310W, 340W, 445W
 - Tipos: Monocristalinos, policristalinos
-- Vida útil: 25 años
+- Vida útil: 30 años
 - Aplicaciones: Generacion, iluminación, electrodomésticos, carga de baterías
 
 ### 3.2 Inversores
@@ -78,6 +80,8 @@
 - Sin cableado, bajo mantenimiento
 
 ## 5. Bombas Solares
+- Son bombas que se utilizan para extraer agua de perforacion.
+- Generalmente se usan en el campo.
 - Sumergibles o de superficie
 - Kits de bombeo con panel solar
 - Ideales para campo, pozos y zonas aisladas
